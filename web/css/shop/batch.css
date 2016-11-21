@@ -1,0 +1,61 @@
+td{
+    /*min-width:100px;*/
+    font-size:13px
+}
+.mBottom10{
+    margin-bottom:10px;
+}
+.mRight10{
+    margin-right:10px;
+}
+
+.mTop5{
+    margin-top: 5px;
+}
+
+.grey .box-content {
+    position: relative;
+    z-index: 50;
+    margin-top: -1px;
+    padding: 0px;
+    background: #fff !important;
+    color: #333;
+    min-height: 850px;
+}
+
+.ptb10 {
+    padding: 10px 0px;
+}
+
+table .thead {
+    background-color:#ddd
+}
+
+.dataList {
+    line-height: 22px;
+    width: 100%;
+}
+
+.datalist td {
+    font-size: 13px;
+    word-break: break-all;
+    padding: 5px;
+    min-width: 100%;
+}
+
+.clear {
+    clear: both;
+}
+.price-ctrl-btn{
+    float: left;
+    width: 20px;
+    font-size: 20px;
+}
+.batch-tip{
+    color: #eea236;
+    margin-left: 20px;
+}
+.msrp{
+    padding-top: 7px;
+    width: 150px;
+}

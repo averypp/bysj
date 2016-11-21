@@ -1,0 +1,109 @@
+.notice-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 600px;
+    width: 600px;
+    max-width: 630px;
+    min-width: 320px;
+    z-index: 2000;
+    visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateX(-50%) translateY(-50%);
+}
+.no-md-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    background: rgba(0,0,0,0.7);
+    transition: all 0.3s;
+}
+.no-md-show{
+    visibility: visible;
+}
+.no-md-show ~ .no-md-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+.no-md-content {
+    background: #fff;
+    position: relative;
+    border-radius: 3px;
+    margin: 0 auto;
+    text-align: left;
+}
+.notice-modal.no-md-modal {
+	-webkit-perspective: 1300px;
+	-moz-perspective: 1300px;
+	perspective: 1300px;
+}
+.no-md-show.notice-modal .no-md-content {
+	-webkit-transform: rotateX(0deg);
+	-moz-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+	opacity: 1;
+}
+.no-md-content h3 {
+    margin: 0;
+    padding: 0.8em;
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: 300;
+    opacity: 0.8;
+    background: #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+}
+.no-md-content > div {
+    padding: 15px 40px 10px;
+    margin: 0;
+    font-weight: 300;
+    font-size: 14px;
+}
+.no-md-content h3 {
+    margin: 0;
+    padding: 0.8em;
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: 300;
+    opacity: 0.8;
+    background: #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+}
+.no-md-content > .no-md-footer{
+    margin: 0;
+    padding: 0.8em;
+    font-weight: 300;
+    background: #f0f0f0;
+    border-top: 1px solid #e0e0e0;
+    color: #333;
+}
+.no-md-footer > button, .checkbox{
+    float: right;
+}
+.no-md-footer > .checkbox{
+    margin: 4px 20px 0 0;
+}
+.no-md-content li{
+    color: #888;
+    list-style: disc;
+    margin-left: 30px;
+}
+.no-md-body{
+    max-height: 590px;
+    overflow: auto;
+}
+a.no-md-close {
+    float: right;
+    text-decoration: none;
+}
+a.a.no-md-close :hover{
+    text-decoration: none;
+}

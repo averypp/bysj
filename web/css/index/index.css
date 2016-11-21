@@ -1,0 +1,240 @@
+.shop-row{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.site{
+    float: left;
+    display: block;
+    border: 1px solid #e0e0e0;
+    margin: 0 10px 10px 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: #333;
+}
+#site_list {
+    overflow: hidden;
+}
+#site_list a {
+    float: left;
+    display: block;
+    border: 1px solid #e0e0e0;
+    margin: 0 10px 10px 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: #333;
+}
+#site_list a.on {
+    background: #FFC40D;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #FFC40D;
+}
+.name_tip{
+    color:#e0e0e0;
+}
+.tips{
+    color: #eb3c00;
+}
+#add-authorize{
+    text-align:center;
+    font-size:2rem;
+    cursor:pointer;
+    color:#fff;
+}
+.announcement-content{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 24px;
+}
+.announcement{
+    border-bottom: 2px solid #eee;
+    position: relative;
+    letter-spacing: 2px;
+}
+.announcement:after{
+    content: "";
+    width: 30%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    position: absolute;
+}
+.ali:after{
+    background: #e3301b;
+}
+.ebay:after{
+    background: #86ac3d;
+}
+.amazon:after{
+    background: #2b5797;
+}
+.wish:after{
+    background: #40bddb;
+}
+.lazada:after{
+    background: #f37021;
+}
+.dhgate:after{
+    background: #ffc40d;
+}
+.ensogo:after{
+    background: #9b0533;
+}
+.joom:after{
+    background: #521f54;
+}
+.announcement-shell{
+    padding: 10px;
+}
+.join-us{
+    margin-top: -5px;
+}
+.join-us:hover, .join-us:active, .join-us:link, .join-us:visited{
+    text-decoration: none;
+}
+.join-ebay:hover, .join-ebay:active, .join-ebay:link, .join-ebay:visited{
+    color: #86ac3d;
+}
+.join-ali:hover, .join-ali:active, .join-ali:link, .join-ali:visited{
+    color: #e3301b;
+}
+.join-amazon:hover, .join-amazon:active, .join-amazon:link, .join-amazon:visited{
+    color: #2b5797;
+}
+.join-wish:hover, .join-wish:active, .join-wish:link, .join-wish:visited{
+    color: #40bddb;
+}
+.join-lazada:hover, .join-lazada:active, .join-lazada:link, .join-lazada:visited{
+    color: #f37021;
+}
+.plat-color{
+    float: right;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+}
+.plat-label{
+    float: right;
+    margin-right: 10px;
+}
+#notice-list>li{
+    border-bottom: 1px dashed #bbb;
+    line-height: 40px;
+    margin: 0 10px;
+}
+#notice-list>li:last-child{
+    border-bottom: 0;
+}
+#notice-list>li a{
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+.notice-content li{
+    color: #888;
+    list-style: disc;
+    margin-left: 17px;
+    line-height: 30px;
+}
+.notice-content:last-child{
+    padding-bottom: 10px;
+}
+.question-list>li{
+    border-bottom: 1px dashed #bbb;
+    line-height: 40px;
+    margin: 0 10px;
+}
+.question-list>li a {
+    text-decoration: none;
+    letter-spacing: 2px;
+}
+.question-list>li:first-child {
+    margin-top: -20px;
+}
+.question-list>li:last-child{
+    border-bottom: 0;
+    margin-bottom: -20px;
+}
+.use-count{
+    text-align:center;
+    margin-top:10px;
+}
+.use-count p{
+    font-size:24px;
+    color:#2D89EF;
+}
+table tr td:first-child{
+    text-align: right;
+}
+table tr td{
+    padding: 5px 3px;
+}
+.material .form-control{
+    width: 350px;
+}
+#latest-inform{
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+    line-height: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+#latest-inform strong{
+    color: #eb3c00;
+}
+#latest-inform .close{
+    line-height: 20px;
+}
+.in-content{
+    padding-left: 10px;
+}
+.sandbox{
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    background: #eb3c00;
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 2px;
+    line-height: 12px;
+    color: #fff;
+}
+.ali-box{
+    background: #e3301b !important;
+    border-color: #e3301b !important;
+    color: #fff;
+}
+.ebay-box{
+    background: #86ac3d !important;
+    border-color: #86ac3d !important;
+    color: #fff;
+}
+.amazon-box{
+    background: #2b5797 !important;
+    border-color: #2b5797 !important;
+    color: #fff;
+}
+.wish-box{
+    background: #40bddb !important;
+    border-color: #40bddb !important;
+    color: #fff;
+}
+.lazada-box{
+    background: #f37021 !important;
+    border-color: #f37021 !important;
+    color: #fff;
+}
+.dhgate-box{
+    background: #ffc40d !important;
+    border-color: #ffc40d !important;
+    color: #fff;
+}
+.ensogo-box{
+    background: #9b0533 !important;
+    border-color: #9b0533 !important;
+    color: #fff;
+}
+.joom-box{
+    background: #521f54 !important;
+    border-color: #521f54 !important;
+    color: #fff;
+}

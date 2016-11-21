@@ -1,0 +1,271 @@
+#!/usr/bin/env php
+<?php
+
+class ClassLoader
+{
+    const JOBS_PATH =  __DIR__ . '/jobs';
+    const NAME_SPACE = 'app\jobs';
+
+    private $_classes = [];
+
+    private function __construct()
+    {
+        $this->_init();
+    }
+
+    private function _init()
+    {
+        $this->_setClass();
+        $this->_register();
+    }
+
+    public function getClasses()
+    {
+        return $this->_classes;
+    }
+
+    public function loadClass($class)
+    {
+        if ($file = $this->_findFile($class)) {
+            include $file;
+            return true;
+        }
+    }
+
+    private function _register($prepend = false)
+    {
+        spl_autoload_register(array($this, 'loadClass'), true, $prepend);
+    }
+
+    public static function getLoader()
+    {
+        static $_instance;
+        if (null === $_instance) {
+            $_instance = new self();
+        }
+
+        return $_instance;
+    }
+
+    private function _findFile($class)
+    {
+        if ('\\' == $class[0]) {
+            $class = substr($class, 1);
+        }
+
+        if (isset($this->_classes[$class])) {
+            return $this->_classes[$class];
+        }
+
+        return false;
+    }
+
+    private function _setClass($basename = '')
+    {
+        $dirpath = rtrim(self::JOBS_PATH . '/' . $basename, '/');
+      
+        if (is_dir($dirpath)) {
+            
+            $files = array_diff(scandir($dirpath), ['.', '..']);
+            foreach ($files as  $file) {
+                $classFile = $dirpath . '/' . $file;
+                if (is_dir($classFile)) {
+                    if ($basename) {
+                        $file = $basename . '/' . $file;
+                    }
+                    $this->_classes = array_merge($this->_classes, $this->_setClass($file));
+                    continue;
+                }
+                if ($basename) {
+                    $className = self::NAME_SPACE . '\\' . $basename . '\\' . $file;
+                } else {
+                    $className = self::NAME_SPACE . '\\' . $file;
+                }
+                
+                $ext = substr($classFile, -4);
+                if ($ext == '.php') {
+                    $className = str_replace('/', '\\', rtrim($className, $ext));
+                    $this->_classes[$className] = $classFile;
+                }
+                
+            }
+        }
+
+        return $this->_classes;
+    }
+}
+
+class ResqueWorker
+{
+
+    public $classes = [];
+
+    private $_version = 1.2;
+
+    private $_configs = [];
+
+    private $_allowKeys = ['q', 'l', 'v', 'vv', 'i', 'a', 'r', 'c', 'p'];
+
+    private $_command = '/usr/bin/nohup /usr/bin/php -f /var/www/crossborder/yii ';
+
+    private $_logPath = __DIR__ . '/runtime/logs/cron';
+
+    public function __construct()
+    {
+        $this->init();
+    }
+
+    public function init()
+    {
+        $this->classes = ClassLoader::getLoader()->getClasses();
+        $this->classes = array_keys($this->classes);
+        $this->_configs = require(__DIR__ . '/jobs/config.php');
+
+        // 过滤无效配置
+        $this->_filterInvalidConfig();
+
+        // 清除被删掉的任务
+        $this->_clearDelProcess();
+    }
+
+    private function _filterInvalidConfig()
+    {
+        $queueNames = [];
+        foreach ($this->classes as $class) {
+            try {
+                $reflector = new ReflectionClass($class);
+            } catch (Exception $e) {
+                continue;
+            }
+
+            if (!$reflector->isInstantiable() 
+                || !$reflector->isSubclassOf('app\jobs\BasicWorker'))
+            {
+                continue;
+            }
+
+            $queueName = $reflector->getMethod('queueName')->invoke(null);
+            if (!empty($queueName)) {
+                if (!is_array($queueName)) {
+                    $queueName = explode(',', $queueName);
+                }
+                $queueNames = array_merge($queueNames, $queueName);
+            }
+        }
+
+        $queueNames = array_values($queueNames);
+        foreach ($this->_configs as $k => $config) {
+            if (!is_array($config) || !isset($config['q']) || !in_array($config['q'], $queueNames)) {
+                unset($this->_configs[$k]);
+                continue;
+            }
+            $this->_configs[$k] = $this->_filterKey($config);
+        }
+    }
+
+    private function _clearDelProcess()
+    {
+        $pids = $this->_getRunPids();
+        $queueNames = array_column($this->_configs, 'q');
+        foreach ($pids as $pid => $command) {
+            if (!strpos($command, ':')) {
+                continue;
+            }
+            list($title,) = explode(':', $command);
+            $queueName = end(explode('-', $title));
+            if (!in_array($queueName, $queueNames)) {
+                exec("kill $pid");
+            }
+        }
+    }
+
+    public function exec()
+    {
+        foreach ($this->_configs as $config) {
+            $this->_exec($config);
+        }
+    }
+
+    private function _exec(array $config)
+    {
+
+        $config['c'] = isset($config['c']) && $config['c'] >= 0 ? intval($config['c']) : 1;
+
+        $pids = array_values($this->_getPidsByQueueName($config['q']));
+        // 参数c(次数)等于0时，停止脚本
+        if ($pids && $config['c'] == 0) {
+            exec('kill ' . implode(' ', $pids));
+            return;
+        } 
+
+        $diffNum = $config['c'] - count($pids);
+        if ($diffNum > 0) {
+
+            $config['c'] = $diffNum;
+            $command = $this->_combineCommand($config);
+            exec($command, $output, $returnCode);
+            if ($returnCode !== 0) {
+                fwrite(STDOUT, "exec $command fail $returnCode\n");
+            }
+        } elseif ($diffNum < 0) {
+
+            $diffNum = abs($diffNum);
+            for ($i = 0; $i < $diffNum; $i++) { 
+                exec("kill {$pids[$i]}");
+            }
+        } 
+
+    }
+
+    private function _getPidsByQueueName($queueName)
+    {
+        $pids = [];
+        $cmd = "/bin/ps -A -o pid,ppid,command | egrep 'resque-{$this->_version}-{$queueName}' | grep -v grep";
+        exec($cmd, $cmdOutput);
+        foreach ($cmdOutput as $line) {
+            $line = preg_replace('/\s+/', ' ', $line);
+            list($pid, $ppid, $command) = explode(' ', trim($line), 3);
+            if ($ppid == 1 || stripos($command, 'Processing') === false) {
+                $pids[] = $pid;
+            }
+        }
+
+        return $pids;
+    }
+
+    private function _getRunPids()
+    {
+        $pids = [];
+        $cmd = '/bin/ps -A -o pid,ppid,command | grep resque | grep -v grep | grep -v runresque';
+        exec($cmd, $cmdOutput);
+        foreach ($cmdOutput as $line) {
+            $line = preg_replace('/\s+/', ' ', $line);
+            list($pid, $ppid, $command) = explode(' ', trim($line), 3);
+            // 提取父队列进程id
+            if ($ppid == 1 || stripos($command, 'Processing') === false) {
+                $pids[$pid] = $command;
+            }
+        }
+
+        return $pids;
+    }
+
+    private function _filterKey(array $config)
+    {
+        return array_intersect_key($config, array_flip($this->_allowKeys));
+    }
+
+    private function _combineCommand(array $config)
+    {
+        $param = 'resque ';
+        while (list($k, $v) = each($config)) {
+            $param .= '-' . trim($k) . '=' . trim($v) . ' ';
+        }
+
+        return $this->_command . trim($param) . " >> {$this->_logPath}/{$config['q']}.log 2>&1 &";
+    }
+
+}
+
+$resqueWorker = new ResqueWorker();
+$resqueWorker->exec();

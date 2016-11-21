@@ -1,0 +1,136 @@
+.panel-title{
+    position: relative;
+    font-weight: bold;
+    padding: 3px 5px;
+}
+.panel-toggle{
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    cursor: pointer;
+}
+#example-area table th{
+    white-space: nowrap;
+}
+#example-area table td{
+    white-space: nowrap;
+}
+.imp-tip{
+    padding: 5px 2px;
+    font-size: 14px;
+}
+#map-panel select{
+    width: 200px;
+}
+#submit-panel{
+    display: none;
+}
+.submit-tip{
+    margin-left: 15px;
+    color: #8e8e8e;
+    display: inline-block;
+}
+.required{
+    color: #eb3c00;
+}
+.optional{
+    color: #468847;
+}
+#country-set{
+    display: none;
+}
+#country-content .checkbox{
+    float: left;
+    margin-right: 35px;
+}
+#country-table th{
+    text-align: center;
+    font-weight: 400;
+}
+#country-set-area{
+    display: none;
+}
+.country-rel-set{
+    display: none;
+}
+.country-rel-set[data-id=hk]{
+    display: block;
+}
+.country-rel-set .row{
+    margin: 10px 0;
+}
+.country-rel-set .row:first-child{
+    margin-top: 15px;
+}
+#category-panel{
+    display: none;
+}
+/*category css*/
+.loading-cate {
+    background: url(/static/image/spinner.gif) no-repeat center;
+    background-size: 32px;
+}
+
+.cate-search {
+    font-size: 12px;
+}
+
+.search-div {
+    position: relative;
+    margin: 0;
+    padding: 4px;
+}
+
+#category-tree .category li a {
+    display: block;
+    padding: 0 4px;
+    line-height: 30px;
+    text-decoration: none;
+}
+
+#category-tree .category li.chosen a {
+    background: #f0f0f0;
+}
+
+#category-tree .category li[data-leaf="0"] a:after {
+    content: ">";
+    text-align: right;
+    float: right;
+    color: #000;
+}
+
+.category-area {
+    width: 2500px;
+    padding-right: 15px;
+}
+
+.full-category-name {
+    color: #0DAA69;
+}
+#category-tree .category {
+    border: 1px solid #d0d0d0;
+    width: 256px;
+    height: 368px;
+    float: left;
+    margin-right: 15px;
+    overflow: auto;
+}
+#category-tree .modal-dialog {
+    width: 1100px;
+}
+
+#category-tree .modal-body {
+    overflow: auto;
+}
+.category-area .category:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -1px;
+    width: 20px;
+    height: 2px;
+    background: none!important;
+
+}
+/*. category css*/
